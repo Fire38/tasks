@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('done_date', models.DateTimeField(blank=True, null=True)),
                 ('description', models.CharField(blank=True, max_length=1000, null=True)),
                 ('cover', models.ImageField(blank=True, upload_to='items/%Y/%m/%d')),
-                ('rubric', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='rubric_items', to='core.rubric')),
+                ('rubric', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='rubric_items', to='api.rubric')),
                 ('user', models.ManyToManyField(related_name='wanted_items', to=settings.AUTH_USER_MODEL)),
             ],
         ),

@@ -1,30 +1,24 @@
-import React, { Component } from 'react';
-import { createStore } from 'redux';
-import { initialState } from './initialState';
+import React from 'react';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers/rootReducer';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
+import RubricList from './rubricList';
 
 
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
-const store = createStore(rootReducer);
-
-class App extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            name: 'Roman3'
-        }
-
-    }
-
+class App extends React.Component {
     render(){
         return (
             <Provider store={store}>
-                { this.state.name }
+                <RubricList />
             </Provider>
         )
     }
 }
+
 
 export default App;
 
