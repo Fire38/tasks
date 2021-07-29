@@ -10,18 +10,28 @@ class RubricList extends React.Component {
     }
 
     render(){
-        console.log('tut',this.props)
-        return (
-            <h1>Hello</h1>
-        )
+        console.log(this.props.rubrics)
+        if (this.props.rubrics){
+            return (
+                <ul>
+                    {this.props.rubrics.map((rubric) => (
+                        <li key={rubric.id}>{rubric.name}</li>
+                    ))}
+                </ul>
+            )
+        } else{
+            return (
+                <h1>Privet</h1>
+            )
+        } 
     }
 }
 
 const mapStateToProps = state => ({
     
-    rubrics: state,
-    loading: state.rubrics,
-    error: state.rubrics
+    rubrics: state.rubricReducer.rubrics.rubrics,
+    loading: state.rubricReducer.loading,
+    error: state.rubricReducer.error
 });
 
 export default connect(mapStateToProps)(RubricList);
