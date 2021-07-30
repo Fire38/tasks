@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import LoginForm from './AuthComponents/LoginForm';
+import SignupForm from './AuthComponents/SignupForm';
+
 
 class AuthPage extends React.Component {
     render(){
         return (
-            <h3>Страница авторизации</h3>
+            <div>
+                <LoginForm />
+                <SignupForm />
+            </div>
         )
     }
 }

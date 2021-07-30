@@ -12,6 +12,7 @@ import rootReducer from './components/reducers/rootReducer';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
+
 class RenderApp extends React.Component {
     render(){
         return (
