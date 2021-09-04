@@ -12,10 +12,12 @@ export const fetchRubricsSuccess = rubrics => ({
     payload: { rubrics }
 });
 
+
 export const fetchRubricsFailure = error => ({
     type: FETCH_RUBRICS_FAILURE,
     payload: { error }
-})
+});
+
 
 export function fetchRubrics() {
     return dispatch => {

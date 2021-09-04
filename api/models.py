@@ -1,10 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
-
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
 
 class Rubric(models.Model):
     name = models.CharField(max_length=50, blank=False)
@@ -14,7 +10,8 @@ class Rubric(models.Model):
     def __str__(self):
         return self.name
 
-class Rubric_item(models.Model):
+
+class RubricItem(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
     author = models.CharField(max_length=50, blank=True, null=True)
     done = models.BooleanField(default=False)

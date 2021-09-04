@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import rubricReducer from '../reducers/rubricReducer';
-import authReducer from '../reducers/authReducer';
+import userReducer from '../reducers/userReducer';
 
 
 export default combineReducers({
     rubricReducer,
-    authReducer
+    userReducer
 });

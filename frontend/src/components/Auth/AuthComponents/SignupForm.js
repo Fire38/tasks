@@ -1,8 +1,30 @@
 import React from 'react';
 import AuthButtons from './AuthButtons';
-
+import { registerUser }  from '../../actions/userActions';
+import { connect } from 'react-redux';
 
 class SignupForm extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            username: '',
+            password: ''
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event){
+        event.preventDefault();
+        this.setState({[event.target.name]: event.target.value})
+    }
+
+    handleSubmit(event){
+        event.preventDefault();
+        this.props.dispatch(registerUser(this.state))
+    }
+
+
     render(){
         return (
             <div>
@@ -23,4 +45,11 @@ class SignupForm extends React.Component {
     }
 }
 
-export default SignupForm;
+
+function mapStateToProps(state){
+    return {
+        userReducer: state.userReducer
+    }
+}
+
+export default connect(mapStateToProps)(SignupForm);

@@ -2,34 +2,36 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
-import RubricList from './rubricList';
 import AuthPage from './Auth/AuthPage';
 import WorkPlace from './WorkPlace/WorkPlace';
 
+import { autoLogin } from './actions/userActions';
 
 
 class App extends React.Component {
+    componentDidMount(){
+        this.props.dispatch(autoLogin())
+    }
     render(){
         return (
             <div>
                 <BrowserRouter>
                     <Switch>
                         <Route exact path='/login' render={(props) => (
-                            this.props.logged_in ? <Redirect to='/' /> : <AuthPage />
+                            this.props.userReducer.loggedIn ? <Redirect to='/' /> : <AuthPage />
                         )}/>
                         <Route path='/' render={(props) => (
-                            this.props.logged_in ? <WorkPlace /> : <Redirect to='/login' />
+                            this.props.userReducer.loggedIn ? <WorkPlace /> : <Redirect to='/login/' />
                         )} />
                     </Switch>
                 </BrowserRouter>
-                <RubricList />
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    logged_in: state.authReducer.logged_in
+    userReducer: state.userReducer
 })
 
 
