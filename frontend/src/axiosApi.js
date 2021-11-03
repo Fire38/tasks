@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-const baseURL = 'http://127.0.0.1:8000/'
+import myConfig from './config';
+
 
 const axiosInstance = axios.create({
-    baseURL: baseURL,
+    baseURL: myConfig.serverUrl,
     timeout: 5000,
     headers: {
-        'Authorization': 'JWT ' + localStorage.getItem('access_token'),
+        'Authorization': 'JWT' + localStorage.getItem('access_token'),
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }

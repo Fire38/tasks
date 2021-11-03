@@ -28,24 +28,24 @@ class LoginForm extends React.Component {
 
     render(){
         return (
-            <div>
+            <div className='col-10 col-lg-3'>
                 <AuthButtons />
                 <form method='POST' onSubmit={this.handleSubmit}>
-                    <div>
-                        <input type='text'
-                                name='username'
-                                placeholder='Введите имя пользователя'
-                                value={this.state.username}
-                                onChange={this.handleChange}
+                    <input type='text'
+                            name='username'
+                            className='form-control mb-2'
+                            placeholder='Введите имя пользователя'
+                            value={this.state.username}
+                            onChange={this.handleChange}
+                    />
+                    <input type='password'
+                            name='password'
+                            className='form-control mb-2'
+                            placeholder='Введите пароль'
+                            value={this.state.password}
+                            onChange={this.handleChange}
                         />
-                        <input type='password'
-                                name='password'
-                                placeholder='Введите пароль'
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                         />
-                        <input type='submit' value='Войти' />
-                    </div>
+                    <input type='submit' className='btn btn-primary w-100 fw-bold' value='Войти' />
                 </form>
             </div>
         )

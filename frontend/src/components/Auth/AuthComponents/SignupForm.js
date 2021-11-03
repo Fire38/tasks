@@ -3,6 +3,7 @@ import AuthButtons from './AuthButtons';
 import { registerUser }  from '../../actions/userActions';
 import { connect } from 'react-redux';
 
+
 class SignupForm extends React.Component {
     constructor(props){
         super(props);
@@ -27,17 +28,25 @@ class SignupForm extends React.Component {
 
     render(){
         return (
-            <div>
+            <div className='col-10 col-lg-3'>
                 <AuthButtons />
-                <form method='POST'>
+                <form method='POST' onSubmit={this.handleSubmit}>
                     <div>
                         <input type='text'
                                 name='username'
-                                placeholder='Введите имя пользователя' />
+                                className='form-control mb-2'
+                                placeholder='Введите имя пользователя'
+                                value={this.state.username}
+                                onChange={this.handleChange} 
+                        />
                         <input type='password'
                                 name='password'
-                                placeholder='Введите пароль' />
-                        <input type='submit' value='Зарегистрироваться' />
+                                className='form-control mb-2'
+                                placeholder='Введите пароль'
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                        />
+                        <input type='submit' className='btn btn-primary w-100 fw-bold' value='Зарегистрироваться' />
                     </div>
                 </form>
             </div>

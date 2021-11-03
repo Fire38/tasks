@@ -1,28 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/userActions';
+import  Nav  from './Navbar/Navbar';
+import WantList from './WorkPlaceComponents/TargetList/wantList';
+import AddForm from './WorkPlaceComponents/AddForm/AddForm';
+
+import { Switch, Route } from 'react-router-dom';
+
 
 
 class WorkPlace extends React.Component {
-    constructor(props){
-        super(props);
-        this.handleClickLogout = this.handleClickLogout.bind(this);
-    }
-
-    handleClickLogout(event){
-        event.preventDefault();
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
-        this.props.dispatch(logoutUser())
-    }
 
     render(){
         return (
-            <div>
-                <h3>Рабочая область, {this.props.userReducer.user.username}</h3>
-                <button onClick={this.handleClickLogout} value='Выход'>Выход</button>
+            <div className="container-fluid"> 
+                <Nav/>
+                <Switch>
+                    <Route exact path='/'>
+                        <WantList type={'want'} />
+                    </Route>
+                    <Route path='/want'>
+                        <WantList type={'want'}/>
+                    </Route>
+                    <Route path='/done'>
+                        <WantList type={'done'}/>
+                    </Route>
+                    <Route path='/add'>
+                        <AddForm/>
+                    </Route>
+                </Switch>
             </div>
         )
+
     }
 }
 

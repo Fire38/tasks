@@ -1,3 +1,7 @@
+import axios from 'axios';
+import axiosInstance from '../../axiosApi';
+
+
 export const FETCH_RUBRICS_BEGIN = 'FETCH_RUBRICS_BEGIN';
 export const FETCH_RUBRICS_SUCCESS = 'FETCH_RUBRICS_SUCCESS';
 export const FETCH_RUBRICS_FAILURE = 'FETCH_RUBRICS_FAILURE';
@@ -19,15 +23,25 @@ export const fetchRubricsFailure = error => ({
 });
 
 
-export function fetchRubrics() {
-    return dispatch => {
-        dispatch(fetchRubricsBegin());
-        return fetch('api/rubrics')
-        .then(res => res.json())
-        .then(json => {
-            dispatch(fetchRubricsSuccess(json));
-            return json;
-        })
-        .catch(error => dispatch(fetchRubricsFailure(error)));
-    };
+
+export const getRubrics = () => async dispatch => {
+    try{
+        const res = await axiosInstance.get('api/get-rubrics')
+        dispatch(fetchRubricsSuccess(res.data))
+        return res.data
+    }catch(error){
+        console.log('Ошибка получения рубрик', error)
+    }
+
+}
+
+
+export const addRubric = (rubricInfo) => async dispatch => {
+    try{
+        const res = await axiosInstance.post('api/add-rubric/', {
+            data: rubricInfo
+        });
+    }catch(error){
+        console.log('Не получилось добавить рубрику', error)
+    }
 }

@@ -7,25 +7,28 @@ import WorkPlace from './WorkPlace/WorkPlace';
 
 import { autoLogin } from './actions/userActions';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap';
+import '../../static/css/base.css';
+
 
 class App extends React.Component {
     componentDidMount(){
         this.props.dispatch(autoLogin())
     }
+    
     render(){
         return (
-            <div>
-                <BrowserRouter>
-                    <Switch>
-                        <Route exact path='/login' render={(props) => (
-                            this.props.userReducer.loggedIn ? <Redirect to='/' /> : <AuthPage />
-                        )}/>
-                        <Route path='/' render={(props) => (
-                            this.props.userReducer.loggedIn ? <WorkPlace /> : <Redirect to='/login/' />
-                        )} />
-                    </Switch>
-                </BrowserRouter>
-            </div>
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path='/login' render={(props) => (
+                        this.props.userReducer.loggedIn ? <Redirect to='/' /> : <AuthPage />
+                    )}/>
+                    <Route path='/' render={(props) => (
+                        this.props.userReducer.loggedIn ? <WorkPlace /> : <Redirect to='/login/' />
+                    )} />
+                </Switch>
+            </BrowserRouter>
         )
     }
 }

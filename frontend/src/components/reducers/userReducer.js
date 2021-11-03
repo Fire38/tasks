@@ -2,7 +2,8 @@ const initialState = {
     loggedIn: false,
     error: false,
     errorMessage: '',
-    user: {}
+    user: {},
+    displayForm: 'login'
 }
 
 
@@ -27,6 +28,11 @@ const userReducer = (state=initialState, action) => {
                 ...state,
                 error: true,
                 errorMessage: action.payload.error
+            }
+        case 'DISPLAY_FORM':
+            return {
+                ...state,
+                displayForm: action.form
             }
         default:
             return state

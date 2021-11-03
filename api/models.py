@@ -13,7 +13,6 @@ class Rubric(models.Model):
 
 class RubricItem(models.Model):
     name = models.CharField(max_length=100, blank=False, null=False)
-    author = models.CharField(max_length=50, blank=True, null=True)
     done = models.BooleanField(default=False)
     rubric = models.ForeignKey(Rubric, on_delete=models.CASCADE,
                                related_name='rubric_items', null=True)
@@ -21,7 +20,6 @@ class RubricItem(models.Model):
     added_date = models.DateTimeField(auto_now_add=True)
     done_date = models.DateTimeField(null=True, blank=True)
     description = models.CharField(max_length=1000, blank=True, null=True)
-    cover = models.ImageField(upload_to='items/%Y/%m/%d', blank=True)
 
     def __str__(self):
         return self.name

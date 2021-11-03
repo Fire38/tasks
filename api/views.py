@@ -1,47 +1,88 @@
-from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
 from rest_framework.parsers import JSONParser
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import Rubric, RubricItem
 from .serializers import RubricSerializer, RubricItemSerializer
+from django.utils.decorators import method_decorator
 
 
-@csrf_exempt
-def rubric_list(request):
-    if request.method == 'GET':
-        rubrics = Rubric.objects.all()
+class GetRubric(APIView):
+    def get(self, request):
+        rubrics = Rubric.objects.filter(user=request.user)
         serializer = RubricSerializer(rubrics, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = RubricSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+    def post(self, request):
+        user = request.user
+        rubric = request.data
+        obj, created = Rubric.objects.get_or_create(name=rubric['data']['rubricName'],
+                                                    user=user
+                                                    )
+        return Response(status=status.HTTP_200_OK)
 
 
-@csrf_exempt
-def rubric_detail(request, pk):
-    try:
-        rubric = Rubric.objects.get(pk=pk)
-    except Rubric.DoesNotExist:
-        return HttpResponse(status=404)
+class AddRubric(APIView):
+    def post(self, request):
+        user = request.user
+        rubric = request.data
+        obj, created = Rubric.objects.get_or_create(name=rubric['data']['rubricName'],
+                                                    user=user
+                                                    )
+        return Response(status=status.HTTP_200_OK)
 
-    if request.method == 'GET':
-        serializer = RubricSerializer(rubric)
-        return JsonResponse(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = RubricSerializer(rubric, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+#@method_decorator(csrf_exempt, name='post')
+class GetRubricItem(APIView):
+    def get(self, request, task_type='all', filter_id=''):
+        print(task_type, type(filter_id), filter_id)
+        if filter_id != 'all' and filter_id != '':
+            rubric = Rubric.objects.get(id=int(filter_id))
+        if task_type == 'want':
+            if filter_id == 'all':
+                items = RubricItem.objects.filter(user=request.user, done=False)
+            else:
+                items = RubricItem.objects.filter(user=request.user, done=False, rubric=rubric)
+        elif task_type == 'done':
+            if filter_id == 'all':
+                items = RubricItem.objects.filter(user=request.user, done=True)
+            else:
+                items = RubricItem.objects.filter(user=request.user, done=True, rubric=rubric)
+        else:
+            items = RubricItem.objects.filter(user=request.user)
+        serializer = RubricItemSerializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    elif request.method == 'DELETE':
-        rubric.delete()
-        return HttpResponse(status=204)
+
+class AddRubricItem(APIView):
+
+    def post(self, request):
+        print(request.data)
+        user = request.user
+        rubric_item = request.data
+        rubric = Rubric.objects.get(id=rubric_item['data']['selectedRubric'])
+        rubric_item = RubricItem(name=rubric_item['data']['name'],
+                                 description=rubric_item['data']['description'],
+                                 rubric=rubric
+                                 )
+        rubric_item.save()
+        rubric_item.user.add(user)
+
+        print(rubric_item)
+        print('Прилетел post')
+        return Response(status=status.HTTP_200_OK)
+
+    def put(self, request):
+        print(request.data, request.user)
+        task_id = request.data['data']['id']
+        task_status = request.data['data']['done']
+        task = RubricItem.objects.get(user=request.user, id=task_id)
+        task.done = task_status
+        task.save()
+
+
+        return Response(status=status.HTTP_200_OK)
+
 
