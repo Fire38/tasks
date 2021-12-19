@@ -2,12 +2,16 @@
     height: 100vh;
     padding-right: 0px;
     padding-left: 0px;
-
 }
 
 
 .loginScreen{
     background-color: rgb(3, 79, 109);
+    margin: 0px;
+}
+
+#workSpace{
+    height:85vh;
 }
 
 #authButtons:hover{
@@ -19,12 +23,25 @@ nav.bg-light{
     background-color: #034f6d;
 }
 
-#wantList, #addForm{
+.form-check-input{
+    border: solid green 1px;
+}
+
+.form-check-input:checked{
+  border: solid green 1px;
+  background-color: #198754;
+}
+
+#wantList, #addForm, #itemList{
     margin-top: 10px;
     padding-left: 7px;
     padding-right: 7px;
     margin-left: 0px;
     margin-right: 0px;
+}
+
+#itemList{
+    height: 80%;
 }
 
 select, ul{
@@ -45,6 +62,11 @@ select, ul{
     color: black;
 }
 
+.btn{
+  border: 0px;
+  color: white;
+  font-weight: bold;
+}
 
 
 /* Position and sizing of burger button */
@@ -88,7 +110,7 @@ select, ul{
   
   /* General sidebar styles */
   .bm-menu {
-    background: #f8f9fa;;
+    background-color: #198754;
     padding: 2.5em 1.5em 0;
     font-size: 1.15em;
   }
@@ -116,7 +138,7 @@ select, ul{
 
   #forhHamburgerMenu {
       height: 4em;
-      background-color: #f8f9fa;
+      background-color: #198754;
   }
 
 

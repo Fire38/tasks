@@ -1,10 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+
+import { Toast } from 'bootstrap';
 
 import { getRubrics } from '../../../actions/rubricActions';
 import { getItems, editItems } from '../../../actions/itemActions';
 import Item from './item.js';
+
+import EmptyBox from '../../../../../static/images/box.png'
 
 
 class WantList extends React.PureComponent{
@@ -12,6 +16,7 @@ class WantList extends React.PureComponent{
         super(props)
         this.state = {
             selectedFilter: 'all',
+            showToast: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.getItem = this.getItem.bind(this);
@@ -69,14 +74,20 @@ class WantList extends React.PureComponent{
         
         let noTasks = (
                 <div className='col-xl-4 text-center'>
-                    Пусто
+                    <img src={ EmptyBox } style={{'height': '100px', 'width': '100px'}}/>
+                    <br/>
+                    Кажется здесь пусто:(
                 </div>
         );
 
-
         return(
-            <div>
+            <div className='container-fluid' id="workSpace">
                 <div id='wantList' className='row justify-content-center'>
+                    <nav className='d-sm-none d-block' aria-label="breadcrumb">
+                        <ol className="breadcrumb">
+                            <li className="breadcrumb-item active" aria-current="page">{ this.props.type == 'want' ? 'Запланировано' : 'Выполнено'}</li>
+                        </ol>
+                    </nav>
                     <div className='col-xl-4'>
                         <h5 className='text-center'>Фильтр</h5>
                         <select required className='form-select mb-3 mr-3 col-xl-3' name='selectedFilter' onChange={this.handleChange}>
@@ -85,7 +96,7 @@ class WantList extends React.PureComponent{
                         </select>
                     </div>
                 </div>
-                <div id='wantList' className='row justify-content-center'>
+                <div id='itemList' className={'row justify-content-center ' + (items.length !== 0 ? '' : 'align-items-center')}>
                    { items.length !== 0 ? itemList : noTasks}
                 </div>
             </div>

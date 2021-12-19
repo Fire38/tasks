@@ -28,7 +28,8 @@ class AddRubric(APIView):
     def post(self, request):
         user = request.user
         rubric = request.data
-        obj, created = Rubric.objects.get_or_create(name=rubric['data']['rubricName'],
+        print(rubric)
+        obj, created = Rubric.objects.get_or_create(name=rubric['rubricName'],
                                                     user=user
                                                     )
         return Response(status=status.HTTP_200_OK)
@@ -63,7 +64,7 @@ class AddRubricItem(APIView):
         user = request.user
         rubric_item = request.data
         rubric = Rubric.objects.get(id=rubric_item['data']['selectedRubric'])
-        rubric_item = RubricItem(name=rubric_item['data']['name'],
+        rubric_item = RubricItem(name=rubric_item['data']['title'],
                                  description=rubric_item['data']['description'],
                                  rubric=rubric
                                  )

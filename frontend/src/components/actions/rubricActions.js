@@ -39,7 +39,7 @@ export const getRubrics = () => async dispatch => {
 export const addRubric = (rubricInfo) => async dispatch => {
     try{
         const res = await axiosInstance.post('api/add-rubric/', {
-            data: rubricInfo
+            rubricName: rubricInfo
         });
     }catch(error){
         console.log('Не получилось добавить рубрику', error)

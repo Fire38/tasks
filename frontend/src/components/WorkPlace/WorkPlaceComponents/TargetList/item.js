@@ -33,7 +33,6 @@ class Item extends React.Component{
         return(
             <div className="accordion-item border-0" key={this.props.itemElement.id}>
                 <h2 className="accordion-header " id="sdfgsdfs">
-
                         <div className='d-flex'>
                             <div className='flex-fill'>
                                 <h5 className="accordion-button rounded-5" id='accordion-h' type="button" data-bs-toggle="collapse" data-bs-target={idForButton} aria-expanded="true" aria-controls="collapseOne">
@@ -41,7 +40,7 @@ class Item extends React.Component{
                                 </h5>
                             </div>
                             <div className='d-flex align-items-center' id='checkbox'>
-                                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" defaultChecked={this.props.itemElement.done} onChange={this.handleCheckbox}/>
+                                <input className="form-check-input " type="checkbox" value="" id="flexCheckDefault" defaultChecked={this.props.itemElement.done} onChange={this.handleCheckbox}/>
                             </div>
                         </div>
                 </h2>

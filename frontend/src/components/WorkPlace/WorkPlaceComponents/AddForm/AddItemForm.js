@@ -1,68 +1,61 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getRubrics } from '../../../actions/rubricActions';
 import { addRubricItem } from '../../../actions/itemActions';
 
 
-class AddItemForm extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            name: '',
-            description: '',
-            selectedRubric: '',
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+export const AddItemFormFunc = () => {
+    const [item, setItem] = useState({
+        title: '',
+        description: '',
+        selectedRubric: ''
+    });
+    const dispatch = useDispatch();
+    const rubrics = useSelector(state => state.rubricReducer.rubrics)
+
+    const handleChange = (event) => {
+        setItem({
+            ...item,
+            [event.target.name]: event.target.value
+        });
     }
 
-    componentDidMount(){
-        this.props.dispatch(getRubrics())
-    }
-
-    handleChange(event){
+    const handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({[event.target.name]: event.target.value})
-    }
-
-    handleSubmit(event){
-        event.preventDefault();
-        this.props.dispatch(addRubricItem(this.state))
-        this.setState({
-            name:'',
+        dispatch(addRubricItem(item))
+        setState({
+            title: '',
             description: '',
             selectedRubric: ''
         })
     }
 
+    let rubricList = ''
+    if (rubrics){
+        rubricList = rubrics.rubrics.map((element) =>
+            <option key={ element.id } value={ element.id }>{ element.name }</option>   
+        )
+    }
 
-
-    render(){
-        let rubrics = ''
-        if (this.props.rubricReducer.rubrics.rubrics){
-             rubrics = this.props.rubricReducer.rubrics.rubrics.map((element) =>
-                <option key={ element.id } value={ element.id }>{ element.name }</option>   
-            )
-        }
-
-        return(
+    return (
+        <div className='row justify-content-center' id='addForm'>
             <div className='col-xl-3 col-xs-12 mt-3'>
-                <h5 className='text-center'>Цель</h5>
-                <form method='POST' onSubmit={this.handleSubmit}>
+                <form method='POST' onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <select required className='form-select mb-3' name='selectedRubric' onChange={this.handleChange}>
-                            <option></option>
-                            { rubrics }
+                        <select required defaultValue='' className='form-select mb-3' name='selectedRubric' onChange={handleChange}>
+                            <option value='' hidden>Выберите из списка рубрику</option>
+                            { rubricList }
                         </select>
                         <input 
                             type="text"
                             className="form-control mb-3"
-                            placeholder="Введите название цели"
-                            name='name'
-                            value={this.state.name}
-                            onChange={this.handleChange}
+                            placeholder="Введите название"
+                            name='title'
+                            value={item.title}
+                            onChange={handleChange}
                             required
+                            autoComplete='off'
                         />
                         <div className="form-floating mb-3">
                             <textarea 
@@ -70,26 +63,15 @@ class AddItemForm extends React.Component{
                                 placeholder="Введите краткое описание цели"
                                 id="floatingTextarea"
                                 name='description'
-                                value={this.state.description}
-                                onChange={this.handleChange}>
+                                value={item.description}
+                                onChange={handleChange}>
                             </textarea>
                             <label htmlFor="floatingTextarea">Введите краткое описание</label>
                         </div>
-                        <button type="submit" className="btn btn-primary">Добавить цель</button>
+                        <button type="submit" className="btn btn-primary bg-success font-weight-bold col-12">Сохранить</button>
                     </div>
                 </form>
             </div>
-
-        )
-    }
+        </div>
+    )
 }
-
-
-function mapStateToProps(state){
-    return {
-        rubricReducer: state.rubricReducer
-    }
-}
-
-
-export default connect(mapStateToProps)(AddItemForm)
