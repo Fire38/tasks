@@ -7,3 +7,4 @@ db.sqlite3
 .DS_Store
 settings.py
 node_modules
+.env

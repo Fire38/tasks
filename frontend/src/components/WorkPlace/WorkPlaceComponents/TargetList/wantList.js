@@ -48,7 +48,7 @@ export const WantList = (props) => {
                 type={props.type} 
                 filter={selectedFilter} 
                 getItem={getItem}
-                onChangeClick={notify}
+                
             />
         )
     }

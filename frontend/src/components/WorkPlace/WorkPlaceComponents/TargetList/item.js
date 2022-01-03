@@ -11,7 +11,6 @@ export const Item = (props) => {
 
     const handleCheckbox = (event) => {
         setIsChecked(event.target.checked)
-        props.onChangeClick();
     }
 
     useEffect(() => {
