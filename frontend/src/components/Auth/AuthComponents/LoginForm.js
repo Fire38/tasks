@@ -45,7 +45,7 @@ class LoginForm extends React.Component {
                             value={this.state.password}
                             onChange={this.handleChange}
                         />
-                    <input type='submit' className='btn btn-primary w-100 fw-bold' value='Войти' />
+                    <input type='submit' className='btn btn-primary bg-success w-100 fw-bold' value='Войти' />
                 </form>
             </div>
         )

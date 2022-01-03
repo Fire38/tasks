@@ -1,22 +1,54 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addRubric } from '../../../actions/rubricActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { addRubricSuccess, addRubricFailure } from '../../../actions/rubricActions';
+
+import { ToastContainer, toast, Flip } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import axiosInstance from '../../../../axiosApi';
 
 
 export const AddRubricForm = () => {
     const [rubricName, setRubricName] = useState('');
     const dispatch = useDispatch();
+    const rubricsReducer = useSelector(state => state.rubricReducer)
+    
     
     const handleChange = (event) => {
         event.preventDefault();
         setRubricName(event.target.value)
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async event => {
         event.preventDefault();
-        dispatch(addRubric(rubricName))
-        setRubricName('')
+        try{
+            const res = await axiosInstance.post('api/add-rubric/', {
+                rubricName: rubricName
+            })
+            if (res.status === 201){
+                dispatch(addRubricSuccess())
+                setRubricName('')
+                notify()
+            }
+        }catch(error){
+            dispatch(addRubricFailure)
+            notify(error)
+        }
     }
+  
+    const notify = (error=null) => {
+        error == null ? 
+            toast("Категория успешно добавлена",{
+                type: 'success',
+                autoClose: 3000,
+            })
+            :
+            toast("Категория не добавлена " + error,{
+                type: 'error',
+                autoClose: 3000,
+            });  
+    } 
+
 
     return (
         <div className='row justify-content-center' id='addForm'>
@@ -25,16 +57,28 @@ export const AddRubricForm = () => {
                     <input 
                         type="text"
                         className="form-control mb-3"
-                        placeholder="Введите название рубрики"
+                        placeholder="Введите название категории"
                         name='rubricName'
                         value={rubricName}
                         onChange={handleChange}
-                        autoComplete='off'
                         required
+                        autoComplete='off'
                     />
                     <button type="submit" className="btn btn-primary bg-success font-weight-bold col-12">Сохранить</button>
                 </form>
             </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover
+                transition={Flip}
+            />
         </div>
     )
 }

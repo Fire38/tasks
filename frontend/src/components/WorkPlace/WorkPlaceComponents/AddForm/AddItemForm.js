@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ToastContainer, toast, Flip } from 'react-toastify';
+
 import { getRubrics } from '../../../actions/rubricActions';
-import { addRubricItem } from '../../../actions/itemActions';
+
+import axiosInstance from '../../../../axiosApi';
 
 
-export const AddItemFormFunc = () => {
+export const AddItemForm = () => {
     const [item, setItem] = useState({
         title: '',
         description: '',
@@ -14,6 +17,10 @@ export const AddItemFormFunc = () => {
     const dispatch = useDispatch();
     const rubrics = useSelector(state => state.rubricReducer.rubrics)
 
+    useEffect(() => {
+        dispatch(getRubrics());
+    }, [])
+
     const handleChange = (event) => {
         setItem({
             ...item,
@@ -21,15 +28,38 @@ export const AddItemFormFunc = () => {
         });
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async event => {
         event.preventDefault();
-        dispatch(addRubricItem(item))
-        setState({
-            title: '',
-            description: '',
-            selectedRubric: ''
-        })
+        try{
+            const res = await axiosInstance.post('api/add-rubric-items/', {
+                data: item
+            })
+            if (res.status === 201){
+                notify();
+                setItem({
+                    title: '',
+                    description: '',
+                    ...item
+               })
+            }
+        }catch(error){
+            notify(error)
+        }
     }
+
+    const notify = (error=null) => {
+        error == null ? 
+            toast("Цель успешно добавлена!",{
+                type: 'success',
+                autoClose: 3000,
+            })
+            :
+            toast("Цель не добавлена " + error,{
+                type: 'error',
+                autoClose: 3000,
+            });  
+    } 
+
 
     let rubricList = ''
     if (rubrics){
@@ -44,7 +74,7 @@ export const AddItemFormFunc = () => {
                 <form method='POST' onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <select required defaultValue='' className='form-select mb-3' name='selectedRubric' onChange={handleChange}>
-                            <option value='' hidden>Выберите из списка рубрику</option>
+                            <option value='' hidden>Выберите из списка категорию</option>
                             { rubricList }
                         </select>
                         <input 
@@ -72,6 +102,18 @@ export const AddItemFormFunc = () => {
                     </div>
                 </form>
             </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover
+                transition={Flip}
+            />
         </div>
     )
 }

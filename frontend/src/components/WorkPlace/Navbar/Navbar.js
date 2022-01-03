@@ -1,11 +1,12 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, { Component, UseState } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { logoutUser } from '../../actions/userActions';
 import { slide as Menu } from 'react-burger-menu';
 
 import logo from '../../../../static/images/task.png';
+
 
 class Nav extends Component {
     constructor(props){

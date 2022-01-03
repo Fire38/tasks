@@ -28,11 +28,14 @@ class AddRubric(APIView):
     def post(self, request):
         user = request.user
         rubric = request.data
-        print(rubric)
+        print(request.data)
         obj, created = Rubric.objects.get_or_create(name=rubric['rubricName'],
                                                     user=user
                                                     )
-        return Response(status=status.HTTP_200_OK)
+        if created:
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_501_NOT_IMPLEMENTED)
 
 
 #@method_decorator(csrf_exempt, name='post')
@@ -64,16 +67,25 @@ class AddRubricItem(APIView):
         user = request.user
         rubric_item = request.data
         rubric = Rubric.objects.get(id=rubric_item['data']['selectedRubric'])
-        rubric_item = RubricItem(name=rubric_item['data']['title'],
-                                 description=rubric_item['data']['description'],
-                                 rubric=rubric
-                                 )
-        rubric_item.save()
-        rubric_item.user.add(user)
+        if RubricItem.objects.filter(
+            name=rubric_item['data']['title'],
+            description=rubric_item['data']['description'],
+            rubric=rubric,
+            user=user
+        ).exists():
+            return Response(status=status.HTTP_501_NOT_IMPLEMENTED)
+        else:
 
-        print(rubric_item)
-        print('Прилетел post')
-        return Response(status=status.HTTP_200_OK)
+            rubric_item = RubricItem(name=rubric_item['data']['title'],
+                                                           description=rubric_item['data']['description'],
+                                                           rubric=rubric,
+                                     )
+            rubric_item.save()
+            rubric_item.user.add(user)
+
+            print(rubric_item)
+            print('Прилетел post')
+            return Response(status=status.HTTP_201_CREATED)
 
     def put(self, request):
         print(request.data, request.user)

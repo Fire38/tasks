@@ -20,8 +20,10 @@ class AuthPage extends React.Component {
         }
 
         return (
-            <div className="row h-100 justify-content-center align-items-center loginScreen" id='"loginScreen'>
-                { form }
+            <div className='container-fluid'>
+                <div className="row h-100 justify-content-center align-items-center loginScreen" id='"loginScreen'>
+                    { form }
+                </div>
             </div>
         )
     }

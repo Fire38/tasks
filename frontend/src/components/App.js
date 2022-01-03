@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import AuthPage from './Auth/AuthPage';
-import WorkPlace from './WorkPlace/WorkPlace';
+import { WorkPlace } from './WorkPlace/WorkPlace';
 
 import { autoLogin } from './actions/userActions';
 

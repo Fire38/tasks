@@ -48,7 +48,7 @@ export const editItems = (itemInfo) => async dispatch => {
             data: itemInfo
         })
         if (res.status === 200){
-            console.log(itemInfo.type, itemInfo.Filter)
+            //console.log(itemInfo.type, itemInfo.Filter)
             dispatch(getItems(itemInfo.type, itemInfo.filter))
         }
     }catch(error){

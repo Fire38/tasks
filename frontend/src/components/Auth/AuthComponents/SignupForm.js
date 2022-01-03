@@ -46,7 +46,7 @@ class SignupForm extends React.Component {
                                 value={this.state.password}
                                 onChange={this.handleChange}
                         />
-                        <input type='submit' className='btn btn-primary w-100 fw-bold' value='Зарегистрироваться' />
+                        <input type='submit' className='btn btn-primary bg-success w-100 fw-bold' value='Зарегистрироваться' />
                     </div>
                 </form>
             </div>
