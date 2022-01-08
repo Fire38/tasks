@@ -1,3 +1,3 @@
-const myConfig = {'serverUrl': 'http://192.168.88.247:8000'}
+const myConfig = {'serverUrl': 'https://wantto38.herokuapp.com'}
 
 export default myConfig
